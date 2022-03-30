@@ -1,0 +1,10 @@
+--- dwm.c
++++ dwm.c
+@@ -148,6 +148,7 @@ struct Monitor {
+ 	Monitor *next;
+ 	Window barwin;
+ 	const Layout *lt[2];
++	int ltcur; /* current layout */
+ };
+ 
+ typedef struct {

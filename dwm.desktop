@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=DWM
+Comment=DWM window manager
+Exec=dwm
+Type=Application
+DesktopNames=DWM
+
