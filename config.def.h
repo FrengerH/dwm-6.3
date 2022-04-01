@@ -42,16 +42,16 @@ typedef struct {
     const char *name;
     const void *cmd;
 } Sp;
-const char *spcmd1[] = {"alacritty", "-t", "spterm", NULL };
+const char *spcmd1[] = {"alacritty", "-t", "Alacritty scratchpad", NULL };
 /*
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
 const char *spcmd3[] = {"keepassxc", NULL };
 */
 static Sp scratchpads[] = {
-    /* name          cmd  */
-    {"spterm",      spcmd1},
-  /*{"spranger",    spcmd2},
-    {"keepassxc",   spcmd3},*/
+    /* name                       cmd  */
+    {"Alacritty scratchpad",      spcmd1},
+  /*{"spranger",                  spcmd2},
+    {"keepassxc",                 spcmd3},*/
 };
 
 /* tagging */
@@ -62,10 +62,11 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-        { "Gimp",     NULL,       NULL,       0,            1,           -1 },
-        { "Firefox",  NULL,       NULL,       1,            0,           -1 },
-        { NULL,       NULL,       "spterm",   SPTAG(0),     1,           -1 },
+	/* class                 instance    title                     tags mask     isfloating   monitor */
+        { "Gimp",                NULL,       NULL,                     0,            1,           -1 },
+        { "Firefox",             NULL,       NULL,                     1,            0,           -1 },
+        { NULL,                  NULL,       "Alacritty scratchpad",   SPTAG(0),     1,           -1 },
+        { "Org.gnome.Nautilus",  NULL,       NULL,                     1 << 2,       0,           -1 },
 };
 
 /* layout(s) */
@@ -98,6 +99,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *roficmd[] = { "rofi", "-show", "drun", "-show-icons", NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *browsercmd[]  = { "firefox-esr", NULL };
+static const char *filescmd[]  = { "nautilus", NULL };
 
 #include "movestack.c"
 static Key keys[] = {
@@ -105,6 +107,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_r,      spawn,          {.v = roficmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
+	{ MODKEY,                       XK_e,      spawn,          {.v = filescmd } },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY|ShiftMask,             XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      focusstack,     {.i = -1 } },
