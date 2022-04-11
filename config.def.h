@@ -144,10 +144,10 @@ static Key keys[] = {
 	{ MODKEY,                XK_0,                          view,           {.ui = ~0 } },
 	{ MODKEY,     	         XK_a,  	                togglescratch,  {.ui = 0 } },
 	{ MODKEY,                XK_s,                          spawn,          {.v = browsercmd } },
-	{ MODKEY,                XK_e,                          spawn,          {.v = filescmd } },
+	{ MODKEY,                XK_t,                          spawn,          {.v = filescmd } },
 	{ MODKEY,                XK_i,                          setmfact,       {.f = +0.05} },
-	{ MODKEY,                XK_j,                          movestack,      {.i = +1 } },
-	{ MODKEY,                XK_k,                          movestack,      {.i = -1 } },
+	{ MODKEY,                XK_n,                          movestack,      {.i = +1 } },
+	{ MODKEY,                XK_e,                          movestack,      {.i = -1 } },
 	{ MODKEY,                XK_o,                          spawn,          {.v = lockcmd } },
 	{ MODKEY,                XK_m,                          setmfact,       {.f = -0.05} },
 	{ MODKEY,                XK_r,                          spawn,          {.v = roficmd } },
@@ -180,15 +180,15 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,    XK_d,                          incnmaster,     {.i = -1 } },*/
 	
 	//Tags
-	{ MODKEY,                XK_q,                          view,           {.ui = 1 } },
-	{ MODKEY,                XK_w,                          view,           {.ui = 2 } },
-	{ MODKEY,                XK_f,                          view,           {.ui = 3 } },
-	{ MODKEY,                XK_p,                          view,           {.ui = 4 } },
-	{ MODKEY,                XK_b,                          view,           {.ui = 5 } },
-	{ MODKEY,                XK_j,                          view,           {.ui = 6 } },
-	{ MODKEY,                XK_l,                          view,           {.ui = 7 } },
-	{ MODKEY,                XK_u,                          view,           {.ui = 8 } },
-	{ MODKEY,                XK_y,                          view,           {.ui = 9 } },
+	{ MODKEY,                XK_q,                          view,           {.ui = 1 << 0 } },
+	{ MODKEY,                XK_w,                          view,           {.ui = 1 << 1 } },
+	{ MODKEY,                XK_f,                          view,           {.ui = 1 << 2 } },
+	{ MODKEY,                XK_p,                          view,           {.ui = 1 << 3 } },
+	{ MODKEY,                XK_b,                          view,           {.ui = 1 << 4 } },
+	{ MODKEY,                XK_j,                          view,           {.ui = 1 << 5 } },
+	{ MODKEY,                XK_l,                          view,           {.ui = 1 << 6 } },
+	{ MODKEY,                XK_u,                          view,           {.ui = 1 << 7 } },
+	{ MODKEY,                XK_y,                          view,           {.ui = 1 << 8 } },
 	TAGKEYS(                 XK_1,                                           0)
 	TAGKEYS(                 XK_2,                                           1)
 	TAGKEYS(                 XK_3,                                           2)
