@@ -1,11 +1,10 @@
---- config.def.h
-+++ config.def.h
-@@ -90,6 +90,8 @@ static Key keys[] = {
- 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
- 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
- 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-+	{ MODKEY|ShiftMask,             XK_h,      layoutscroll,   {.i = -1 } },
-+	{ MODKEY|ShiftMask,             XK_l,      layoutscroll,   {.i = +1 } },
- 	TAGKEYS(                        XK_1,                      0)
- 	TAGKEYS(                        XK_2,                      1)
- 	TAGKEYS(                        XK_3,                      2)
+--- config.def.h	Tue Dec 04 21:54:44 2012 +0200
++++ config.def.h	Tue Dec 04 21:54:44 2012 +0200
+@@ -91,6 +93,7 @@
+ 	TAGKEYS(                        XK_7,                      6)
+ 	TAGKEYS(                        XK_8,                      7)
+ 	TAGKEYS(                        XK_9,                      8)
++    { MODKEY|ShiftMask,             XK_r,      self_restart,   {0} },
+ 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+ };
+ 
