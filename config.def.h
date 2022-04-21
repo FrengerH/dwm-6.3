@@ -160,13 +160,13 @@ static Key keys[] = {
 	{ MODKEY,                XK_period,                     focusmon,       {.i = +1 } },
 
 	{ MODKEY|ShiftMask,      XK_0,                          tag,            {.ui = ~0 } },
-	{ MODKEY|ShiftMask,      XK_b,                          togglebar,      {0} },
-	{ MODKEY|ShiftMask,      XK_f,                          setlayout,      {.v = &layouts[1]} },
-	{ MODKEY|ShiftMask,      XK_j,                          focusstack,     {.i = +1 } },
-	{ MODKEY|ShiftMask,      XK_k,                          focusstack,     {.i = -1 } },
-	{ MODKEY|ShiftMask,      XK_m,                          setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,      XK_t,                          setlayout,      {.v = &layouts[0]} },
-	{ MODKEY|ShiftMask,      XK_q,                          quit,           {0} },
+	/*{ MODKEY|ShiftMask,      XK_b,                          togglebar,      {0} },*/
+	/*{ MODKEY|ShiftMask,      XK_f,                          setlayout,      {.v = &layouts[1]} },*/
+	{ MODKEY|ShiftMask,      XK_n,                          focusstack,     {.i = +1 } },
+	{ MODKEY|ShiftMask,      XK_e,                          focusstack,     {.i = -1 } },
+	/*{ MODKEY|ShiftMask,      XK_m,                          setlayout,      {.v = &layouts[2]} },*/
+	/*{ MODKEY|ShiftMask,      XK_t,                          setlayout,      {.v = &layouts[0]} },*/
+	/*{ MODKEY|ShiftMask,      XK_q,                          quit,           {0} },*/
 	{ MODKEY|ShiftMask,      XK_space,                      togglefloating, {0} },
 	{ MODKEY|ShiftMask,      XK_comma,                      tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,      XK_period,                     tagmon,         {.i = +1 } },
@@ -180,15 +180,15 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,    XK_d,                          incnmaster,     {.i = -1 } },*/
 	
 	//Tags
-	{ MODKEY,                XK_q,                          view,           {.ui = 1 << 0 } },
-	{ MODKEY,                XK_w,                          view,           {.ui = 1 << 1 } },
-	{ MODKEY,                XK_f,                          view,           {.ui = 1 << 2 } },
-	{ MODKEY,                XK_p,                          view,           {.ui = 1 << 3 } },
-	{ MODKEY,                XK_b,                          view,           {.ui = 1 << 4 } },
-	{ MODKEY,                XK_j,                          view,           {.ui = 1 << 5 } },
-	{ MODKEY,                XK_l,                          view,           {.ui = 1 << 6 } },
-	{ MODKEY,                XK_u,                          view,           {.ui = 1 << 7 } },
-	{ MODKEY,                XK_y,                          view,           {.ui = 1 << 8 } },
+	TAGKEYS(                 XK_q,                                           0)
+	TAGKEYS(                 XK_w,                                           1) 
+	TAGKEYS(                 XK_f,                                           2)
+	TAGKEYS(                 XK_p,                                           3)
+	TAGKEYS(                 XK_b,                                           4)
+	TAGKEYS(                 XK_j,                                           5)
+	TAGKEYS(                 XK_l,                                           6)
+	TAGKEYS(                 XK_u,                                           7)
+	TAGKEYS(                 XK_y,                                           8)
 	TAGKEYS(                 XK_1,                                           0)
 	TAGKEYS(                 XK_2,                                           1)
 	TAGKEYS(                 XK_3,                                           2)
