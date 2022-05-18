@@ -1,3 +1,4 @@
+#include "secrets.h";
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
@@ -9,6 +10,7 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;     /* 0 means no bar */
 static const int topbar             = 1;     /* 0 means bottom bar */
+static const int focusonwheel       = 0;
 static const char *fonts[]          = { "FiraCode Nerd Font:size=11", "monospace:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#222222";
@@ -42,16 +44,23 @@ typedef struct {
     const char *name;
     const void *cmd;
 } Sp;
-const char *spcmd1[] = {"alacritty", "-t", "Alacritty scratchpad", NULL };
+const char *spcmd1[] = {"alacritty", "-t", "Alacritty-scratchpad", NULL };
+const char *spcmd2[] = {"alacritty", "-t", "Spotify-tui", "-e", "spt", NULL };
+const char *spcmd3[] = {"alacritty", "-t", "Calculator", "-e", "rink", NULL };
+const char *spcmd4[] = {"alacritty", "-t", "Daily", "-e", "nvim", "+", path, NULL };
+const char *spcmd5[] = {"pavucontrol", NULL};
 /*
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
 const char *spcmd3[] = {"keepassxc", NULL };
 */
 static Sp scratchpads[] = {
     /* name                       cmd  */
-    {"Alacritty scratchpad",      spcmd1},
-  /*{"spranger",                  spcmd2},
-    {"keepassxc",                 spcmd3},*/
+    {"Alacritty-scratchpad",      spcmd1},
+    {"Spotify-tui",               spcmd2},
+    {"Calculator",                spcmd3},
+    {"Daily",                     spcmd4},
+    {"Pavucontrol",               spcmd5},
+    /*{"keepassxc",                 spcmd3},*/
 };
 
 /* tagging */
@@ -62,22 +71,25 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class                       instance    title                     tags mask     isfloating   monitor */
-        { "Firefox",                   NULL,       NULL,                     1,            0,           -1 },
-        { NULL,                        NULL,       "Alacritty scratchpad",   SPTAG(0),     1,           -1 },
-        { "jetbrains-phpstorm",        NULL,       NULL,                     1 << 1,       0,           -1 },
-        { "Org.gnome.Nautilus",        NULL,       NULL,                     1 << 2,       0,           -1 },
-        { "DBeaver",                   NULL,       NULL,                     1 << 3,       0,           -1 },
-        { "Mysql-workbench-bin",       NULL,       NULL,                     1 << 3,       0,           -1 },
-        { "robo3t",                    NULL,       NULL,                     1 << 3,       0,           -1 },
-        { "Gimp",                      NULL,       NULL,                     1 << 4,       0,           -1 },
-        { "VirtualBox Manager",        NULL,       NULL,                     1 << 5,       0,           -1 },
-        { "Virt-manager",              NULL,       NULL,                     1 << 5,       0,           -1 },
-        { "org.remmina.Remmina",       NULL,       NULL,                     1 << 5,       0,           -1 },
-        { "Microsoft Teams - Preview", NULL,       NULL,                     1 << 6,       0,           -1 },
-        { "Code",                      NULL,       NULL,                     1 << 7,       0,           -1 },
-        { "Sublime_text",              NULL,       NULL,                     1 << 8,       0,           -1 },
-        { "Pavucontrol",               NULL,       NULL,                     0,            1,           -1 },
+	/* class                       instance               title                     tags mask     isfloating   monitor */
+        { "Firefox",                   NULL,              NULL,                     1,            0,           -1 },
+        { NULL,                        NULL,              "Alacritty-scratchpad",   SPTAG(0),     1,           -1 },
+        { NULL,                        NULL,              "Spotify-tui",            SPTAG(1),     1,           -1 },
+        { NULL,                        NULL,              "Calculator",             SPTAG(2),     1,           -1 },
+        { NULL,                        NULL,              "Daily",                  SPTAG(3),     1,           -1 },
+        { "jetbrains-phpstorm",        NULL,              NULL,                     1 << 1,       0,           -1 },
+        { "Org.gnome.Nautilus",        NULL,              NULL,                     1 << 2,       0,           -1 },
+        { "DBeaver",                   NULL,              NULL,                     1 << 3,       0,           -1 },
+        { "Mysql-workbench-bin",       NULL,              NULL,                     1 << 3,       0,           -1 },
+        { "robo3t",                    NULL,              NULL,                     1 << 3,       0,           -1 },
+        { "Gimp",                      NULL,              NULL,                     1 << 4,       0,           -1 },
+        { "VirtualBox Manager",        NULL,              NULL,                     1 << 5,       0,           -1 },
+        { "Virt-manager",              NULL,              NULL,                     1 << 5,       0,           -1 },
+        { "org.remmina.Remmina",       NULL,              NULL,                     1 << 5,       0,           -1 },
+        { "Microsoft Teams - Preview", NULL,              NULL,                     1 << 6,       0,           -1 },
+        { "Code",                      NULL,              NULL,                     1 << 7,       0,           -1 },
+        { "Sublime_text",              NULL,              NULL,                     1 << 8,       0,           -1 },
+        { NULL,                        NULL,              "Volume Control",         SPTAG(4),     1,           -1 },
 };
 
 /* layout(s) */
@@ -113,13 +125,13 @@ static const char *termcmd[]       = { "alacritty", NULL };
 static const char *browsercmd[]    = { "firefox-esr", NULL };
 static const char *filescmd[]      = { "nautilus", NULL };
 static const char *flameshotcmd[]  = { "flameshot", "gui", NULL };
-static const char *pavuctrlcmd[]   = { "pavucontrol", NULL };
+/* static const char *pavuctrlcmd[]   = { "pavucontrol", NULL }; */
 static const char *lockcmd[]       = { "light-locker-command", "-l", NULL };
 
 static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+3%",     NULL };
 static const char *downvol[] = { "pactl", "set-sink-volume", "0", "-3%",     NULL };
-static const char *mutevol[] = { "pactl", "set-sink-mute",   "0", "toggle",  NULL };
-static const char *mutemic[] = { "pactl", "set-source-mute", "0", "toggle",  NULL };
+static const char *mutevol[] = { "amixer", "set", "Master", "toggle",  NULL };
+static const char *mutemic[] = { "pactl", "set-source-mute", "alsa_input.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__hw_sofhdadsp_6__source", "toggle",  NULL };
 
 static const char *upbrightness[]   = { "brightnessctl", "--device=intel_backlight", "set", "+2%", NULL };
 static const char *downbrightness[] = { "brightnessctl", "--device=intel_backlight", "set", "2%-", NULL };
@@ -142,16 +154,20 @@ static Key keys[] = {
 	{ 0,                     XK_Print,                      spawn,          {.v = flameshotcmd } },
 
 	{ MODKEY,                XK_0,                          view,           {.ui = ~0 } },
-	{ MODKEY,     	         XK_a,  	                togglescratch,  {.ui = 0 } },
-	{ MODKEY,                XK_s,                          spawn,          {.v = browsercmd } },
-	{ MODKEY,                XK_t,                          spawn,          {.v = filescmd } },
+	{ MODKEY,     	         XK_a,  	                    togglescratch,  {.ui = 0 } },
+	{ MODKEY,     	         XK_c,  	                    togglescratch,  {.ui = 2 } },
+	{ MODKEY,     	         XK_d,  	                    togglescratch,  {.ui = 1 } },
+	{ MODKEY,     	         XK_z,  	                    togglescratch,  {.ui = 3 } },
+	{ MODKEY,     	         XK_v,  	                    togglescratch,  {.ui = 4 } },
+	{ MODKEY,                XK_b,                          spawn,          {.v = browsercmd } },
+	{ MODKEY,                XK_f,                          spawn,          {.v = filescmd } },
 	{ MODKEY,                XK_i,                          setmfact,       {.f = +0.05} },
-	{ MODKEY,                XK_n,                          movestack,      {.i = +1 } },
-	{ MODKEY,                XK_e,                          movestack,      {.i = -1 } },
-	{ MODKEY,                XK_o,                          spawn,          {.v = lockcmd } },
+	{ MODKEY,                XK_n,                          focusstack,      {.i = +1 } },
+	{ MODKEY,                XK_e,                          focusstack,      {.i = -1 } },
+	{ MODKEY,                XK_l,                          spawn,          {.v = lockcmd } },
 	{ MODKEY,                XK_m,                          setmfact,       {.f = -0.05} },
 	{ MODKEY,                XK_r,                          spawn,          {.v = roficmd } },
-	{ MODKEY,                XK_v,                          spawn,          {.v = pavuctrlcmd } },
+	/* { MODKEY,                XK_v,                          spawn,          {.v = pavuctrlcmd } }, */
 	{ MODKEY,                XK_x,                          killclient,     {0} },
 	{ MODKEY,                XK_Tab,                        focusstack,     {.i = +1 } },
 	{ MODKEY,                XK_Return,                     spawn,          {.v = termcmd } },
@@ -162,8 +178,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,      XK_0,                          tag,            {.ui = ~0 } },
 	/*{ MODKEY|ShiftMask,      XK_b,                          togglebar,      {0} },*/
 	/*{ MODKEY|ShiftMask,      XK_f,                          setlayout,      {.v = &layouts[1]} },*/
-	{ MODKEY|ShiftMask,      XK_n,                          focusstack,     {.i = +1 } },
-	{ MODKEY|ShiftMask,      XK_e,                          focusstack,     {.i = -1 } },
+	{ MODKEY|ShiftMask,      XK_n,                          movestack,     {.i = +1 } },
+	{ MODKEY|ShiftMask,      XK_e,                          movestack,     {.i = -1 } },
 	/*{ MODKEY|ShiftMask,      XK_m,                          setlayout,      {.v = &layouts[2]} },*/
 	/*{ MODKEY|ShiftMask,      XK_t,                          setlayout,      {.v = &layouts[0]} },*/
 	/*{ MODKEY|ShiftMask,      XK_q,                          quit,           {0} },*/
@@ -180,15 +196,15 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,    XK_d,                          incnmaster,     {.i = -1 } },*/
 	
 	//Tags
-	TAGKEYS(                 XK_q,                                           0)
-	TAGKEYS(                 XK_w,                                           1) 
-	TAGKEYS(                 XK_f,                                           2)
-	TAGKEYS(                 XK_p,                                           3)
-	TAGKEYS(                 XK_b,                                           4)
-	TAGKEYS(                 XK_j,                                           5)
-	TAGKEYS(                 XK_l,                                           6)
-	TAGKEYS(                 XK_u,                                           7)
-	TAGKEYS(                 XK_y,                                           8)
+	/* TAGKEYS(                 XK_q,                                           0) */
+	/* TAGKEYS(                 XK_w,                                           1) */ 
+	/* TAGKEYS(                 XK_f,                                           2) */
+	/* TAGKEYS(                 XK_p,                                           3) */
+	/* TAGKEYS(                 XK_b,                                           4) */
+	/* TAGKEYS(                 XK_j,                                           5) */
+	/* TAGKEYS(                 XK_l,                                           6) */
+	/* TAGKEYS(                 XK_u,                                           7) */
+	/* TAGKEYS(                 XK_y,                                           8) */
 	TAGKEYS(                 XK_1,                                           0)
 	TAGKEYS(                 XK_2,                                           1)
 	TAGKEYS(                 XK_3,                                           2)
