@@ -44,10 +44,10 @@ typedef struct {
     const char *name;
     const void *cmd;
 } Sp;
-const char *spcmd1[] = {"alacritty", "-t", "Alacritty-scratchpad", NULL };
-const char *spcmd2[] = {"alacritty", "-t", "Spotify-tui", "-e", "spt", NULL };
-const char *spcmd3[] = {"alacritty", "-t", "Calculator", "-e", "rink", NULL };
-const char *spcmd4[] = {"alacritty", "-t", "Daily", "-e", "nvim", "+", path, NULL };
+const char *spcmd1[] = {"st", "-t", "st-scratchpad", "-n", "st", NULL };
+const char *spcmd2[] = {"st", "-t", "Spotify-tui", "-e", "spt", NULL };
+const char *spcmd3[] = {"st", "-t", "Calculator", "-e", "rink", NULL };
+const char *spcmd4[] = {"st", "-t", "Daily", "-e", "nvim", "+", path, NULL };
 const char *spcmd5[] = {"pavucontrol", NULL};
 /*
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
@@ -55,7 +55,7 @@ const char *spcmd3[] = {"keepassxc", NULL };
 */
 static Sp scratchpads[] = {
     /* name                       cmd  */
-    {"Alacritty-scratchpad",      spcmd1},
+    {"st-scratchpad",      spcmd1},
     {"Spotify-tui",               spcmd2},
     {"Calculator",                spcmd3},
     {"Daily",                     spcmd4},
@@ -73,7 +73,7 @@ static const Rule rules[] = {
 	 */
 	/* class                       instance               title                     tags mask     isfloating   monitor */
         { "Firefox",                   NULL,              NULL,                     1,            0,           -1 },
-        { NULL,                        NULL,              "Alacritty-scratchpad",   SPTAG(0),     1,           -1 },
+        { NULL,                        NULL,              "st-scratchpad",   SPTAG(0),     1,           -1 },
         { NULL,                        NULL,              "Spotify-tui",            SPTAG(1),     1,           -1 },
         { NULL,                        NULL,              "Calculator",             SPTAG(2),     1,           -1 },
         { NULL,                        NULL,              "Daily",                  SPTAG(3),     1,           -1 },
@@ -121,7 +121,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 
 static const char *roficmd[]       = { "rofi", "-show", "drun", "-show-icons", NULL };
-static const char *termcmd[]       = { "alacritty", NULL };
+static const char *termcmd[]       = { "st", "-e", tmux_start, "-n", "st", NULL };
 static const char *browsercmd[]    = { "firefox-esr", NULL };
 static const char *filescmd[]      = { "nautilus", NULL };
 static const char *flameshotcmd[]  = { "flameshot", "gui", NULL };
