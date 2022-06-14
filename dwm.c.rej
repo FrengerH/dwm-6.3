@@ -1,26 +1,10 @@
---- dwm.c
-+++ dwm.c
-@@ -1094,23 +1072,6 @@ monocle(Monitor *m)
- 		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
- }
- 
--void
--motionnotify(XEvent *e)
--{
--	static Monitor *mon = NULL;
--	Monitor *m;
--	XMotionEvent *ev = &e->xmotion;
--
--	if (ev->window != root)
--		return;
--	if ((m = recttomon(ev->x_root, ev->y_root, 1, 1)) != mon && mon) {
--		unfocus(selmon->sel, 1);
--		selmon = m;
--		focus(NULL);
--	}
--	mon = m;
--}
--
- void
- movemouse(const Arg *arg)
- {
+--- /dev/null
++++ /dev/null
+@@ -206,6 +206,7 @@ static void setup(void);
+ static void seturgent(Client *c, int urg);
+ static void showhide(Client *c);
+ static void sigchld(int unused);
++static int solitary(Client *c);
+ static void spawn(const Arg *arg);
+ static void tag(const Arg *arg);
+ static void tagmon(const Arg *arg);
