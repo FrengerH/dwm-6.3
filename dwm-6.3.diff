@@ -1,6 +1,7 @@
-diff '--color=auto' -u a/config.def.h b/config.def.h
---- a/config.def.h	2022-01-07 12:42:18.000000000 +0100
-+++ b/config.def.h	2022-06-10 13:02:01.978489001 +0200
+diff --git a/config.def.h b/config.def.h
+index a2ac963..2ef1cd1 100644
+--- a/config.def.h
++++ b/config.def.h
 @@ -1,34 +1,95 @@
 +#include "secrets.h";
  /* See LICENSE file for copyright and license details. */
@@ -106,7 +107,7 @@ diff '--color=auto' -u a/config.def.h b/config.def.h
  };
  
  /* layout(s) */
-@@ -40,12 +101,12 @@
+@@ -40,12 +101,12 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
  static const Layout layouts[] = {
  	/* symbol     arrange function */
  	{ "[]=",      tile },    /* first entry is default */
@@ -121,7 +122,7 @@ diff '--color=auto' -u a/config.def.h b/config.def.h
  #define TAGKEYS(KEY,TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-@@ -53,64 +114,125 @@
+@@ -53,64 +114,125 @@ static const Layout layouts[] = {
  	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
  
  /* helper for spawning shell commands in the pre dwm-5.0 fashion */
@@ -288,10 +289,13 @@ diff '--color=auto' -u a/config.def.h b/config.def.h
  	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
  };
 -
-diff '--color=auto' -u a/dwm.1 b/dwm.1
---- a/dwm.1	2022-01-07 12:42:18.000000000 +0100
-+++ b/dwm.1	2022-03-30 23:15:13.122603596 +0200
-@@ -30,6 +30,14 @@
+
+
+diff --git a/dwm.1 b/dwm.1
+index ddc8321..86e73f9 100644
+--- a/dwm.1
++++ b/dwm.1
+@@ -30,6 +30,14 @@ top left corner.  The tags which are applied to one or more windows are
  indicated with an empty square in the top left corner.
  .P
  dwm draws a small border around windows to indicate the focus state.
@@ -306,7 +310,7 @@ diff '--color=auto' -u a/dwm.1 b/dwm.1
  .SH OPTIONS
  .TP
  .B \-v
-@@ -152,6 +160,21 @@
+@@ -152,6 +160,21 @@ Toggles focused window between floating and tiled state.
  .TP
  .B Mod1\-Button3
  Resize focused window while dragging. Tiled windows will be toggled to the floating state.
@@ -328,9 +332,12 @@ diff '--color=auto' -u a/dwm.1 b/dwm.1
  .SH CUSTOMIZATION
  dwm is customized by creating a custom config.h and (re)compiling the source
  code. This keeps it fast, secure and simple.
-diff '--color=auto' -u a/dwm.c b/dwm.c
---- a/dwm.c	2022-01-07 12:42:18.000000000 +0100
-+++ b/dwm.c	2022-06-12 00:40:38.519043608 +0200
+
+
+diff --git a/dwm.c b/dwm.c
+index a96f33c..4c0dd14 100644
+--- a/dwm.c
++++ b/dwm.c
 @@ -29,6 +29,7 @@
  #include <string.h>
  #include <unistd.h>
@@ -390,7 +397,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
  enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
         ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
-@@ -111,6 +137,7 @@
+@@ -111,6 +137,7 @@ typedef struct {
  	void (*arrange)(Monitor *);
  } Layout;
  
@@ -398,7 +405,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  struct Monitor {
  	char ltsymbol[16];
  	float mfact;
-@@ -124,12 +151,15 @@
+@@ -124,12 +151,15 @@ struct Monitor {
  	unsigned int tagset[2];
  	int showbar;
  	int topbar;
@@ -414,7 +421,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  };
  
  typedef struct {
-@@ -141,12 +171,19 @@
+@@ -141,12 +171,19 @@ typedef struct {
  	int monitor;
  } Rule;
  
@@ -434,7 +441,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  static void attachstack(Client *c);
  static void buttonpress(XEvent *e);
  static void checkotherwm(void);
-@@ -163,7 +200,6 @@
+@@ -163,7 +200,6 @@ static void detachstack(Client *c);
  static Monitor *dirtomon(int dir);
  static void drawbar(Monitor *m);
  static void drawbars(void);
@@ -442,7 +449,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  static void expose(XEvent *e);
  static void focus(Client *c);
  static void focusin(XEvent *e);
-@@ -172,6 +208,7 @@
+@@ -172,6 +208,7 @@ static void focusstack(const Arg *arg);
  static Atom getatomprop(Client *c, Atom prop);
  static int getrootptr(int *x, int *y);
  static long getstate(Window w);
@@ -450,7 +457,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
  static void grabbuttons(Client *c, int focused);
  static void grabkeys(void);
-@@ -182,36 +219,44 @@
+@@ -182,36 +219,44 @@ static void manage(Window w, XWindowAttributes *wa);
  static void mappingnotify(XEvent *e);
  static void maprequest(XEvent *e);
  static void monocle(Monitor *m);
@@ -497,7 +504,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  static void toggletag(const Arg *arg);
  static void toggleview(const Arg *arg);
  static void unfocus(Client *c, int setfocus);
-@@ -220,29 +265,43 @@
+@@ -220,29 +265,43 @@ static void unmapnotify(XEvent *e);
  static void updatebarpos(Monitor *m);
  static void updatebars(void);
  static void updateclientlist(void);
@@ -543,7 +550,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  static unsigned int numlockmask = 0;
  static void (*handler[LASTEvent]) (XEvent *) = {
  	[ButtonPress] = buttonpress,
-@@ -250,17 +309,16 @@
+@@ -250,17 +309,16 @@ static void (*handler[LASTEvent]) (XEvent *) = {
  	[ConfigureRequest] = configurerequest,
  	[ConfigureNotify] = configurenotify,
  	[DestroyNotify] = destroynotify,
@@ -563,7 +570,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  static int running = 1;
  static Cur *cursor[CurLast];
  static Clr **scheme;
-@@ -268,10 +326,20 @@
+@@ -268,10 +326,20 @@ static Display *dpy;
  static Drw *drw;
  static Monitor *mons, *selmon;
  static Window root, wmcheckwin;
@@ -584,7 +591,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  /* compile-time check if all tags fit into an unsigned int bit array. */
  struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
  
-@@ -300,6 +368,11 @@
+@@ -300,6 +368,11 @@ applyrules(Client *c)
  		{
  			c->isfloating = r->isfloating;
  			c->tags |= r->tags;
@@ -596,7 +603,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  			for (m = mons; m && m->num != r->monitor; m = m->next);
  			if (m)
  				c->mon = m;
-@@ -309,7 +382,7 @@
+@@ -309,7 +382,7 @@ applyrules(Client *c)
  		XFree(ch.res_class);
  	if (ch.res_name)
  		XFree(ch.res_name);
@@ -605,10 +612,11 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  }
  
  int
-@@ -408,6 +481,15 @@
+@@ -407,6 +480,15 @@ attach(Client *c)
+ 	c->mon->clients = c;
  }
  
- void
++void
 +attachbottom(Client *c)
 +{
 +	Client **tc;
@@ -617,11 +625,10 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
 +	*tc = c;
 +}
 +
-+void
+ void
  attachstack(Client *c)
  {
- 	c->snext = c->mon->stack;
-@@ -417,39 +499,44 @@
+@@ -417,39 +499,44 @@ attachstack(Client *c)
  void
  buttonpress(XEvent *e)
  {
@@ -685,7 +692,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	for (i = 0; i < LENGTH(buttons); i++)
  		if (click == buttons[i].click && buttons[i].func && buttons[i].button == ev->button
  		&& CLEANMASK(buttons[i].mask) == CLEANMASK(ev->state))
-@@ -483,7 +570,14 @@
+@@ -483,7 +570,14 @@ cleanup(void)
  	XUngrabKey(dpy, AnyKey, AnyModifier, root);
  	while (mons)
  		cleanupmon(mons);
@@ -701,7 +708,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  		drw_cur_free(drw, cursor[i]);
  	for (i = 0; i < LENGTH(colors); i++)
  		free(scheme[i]);
-@@ -513,9 +607,58 @@
+@@ -513,9 +607,58 @@ cleanupmon(Monitor *mon)
  void
  clientmessage(XEvent *e)
  {
@@ -760,7 +767,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	if (!c)
  		return;
  	if (cme->message_type == netatom[NetWMState]) {
-@@ -568,7 +711,7 @@
+@@ -568,7 +711,7 @@ configurenotify(XEvent *e)
  				for (c = m->clients; c; c = c->next)
  					if (c->isfullscreen)
  						resizeclient(c, m->mx, m->my, m->mw, m->mh);
@@ -769,7 +776,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  			}
  			focus(NULL);
  			arrange(NULL);
-@@ -632,6 +775,7 @@
+@@ -632,6 +775,7 @@ Monitor *
  createmon(void)
  {
  	Monitor *m;
@@ -777,7 +784,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  
  	m = ecalloc(1, sizeof(Monitor));
  	m->tagset[0] = m->tagset[1] = 1;
-@@ -639,9 +783,24 @@
+@@ -639,9 +783,24 @@ createmon(void)
  	m->nmaster = nmaster;
  	m->showbar = showbar;
  	m->topbar = topbar;
@@ -802,7 +809,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	return m;
  }
  
-@@ -653,6 +812,11 @@
+@@ -653,6 +812,11 @@ destroynotify(XEvent *e)
  
  	if ((c = wintoclient(ev->window)))
  		unmanage(c, 1);
@@ -814,7 +821,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  }
  
  void
-@@ -696,7 +860,8 @@
+@@ -696,7 +860,8 @@ dirtomon(int dir)
  void
  drawbar(Monitor *m)
  {
@@ -824,7 +831,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	int boxs = drw->fonts->h / 9;
  	int boxw = drw->fonts->h / 6 + 2;
  	unsigned int i, occ = 0, urg = 0;
-@@ -705,11 +870,38 @@
+@@ -705,11 +870,38 @@ drawbar(Monitor *m)
  	if (!m->showbar)
  		return;
  
@@ -866,7 +873,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	}
  
  	for (c = m->clients; c; c = c->next) {
-@@ -728,11 +920,17 @@
+@@ -728,11 +920,17 @@ drawbar(Monitor *m)
  				urg & 1 << i);
  		x += w;
  	}
@@ -886,7 +893,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  		if (m->sel) {
  			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
  			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
-@@ -743,7 +941,9 @@
+@@ -743,7 +941,9 @@ drawbar(Monitor *m)
  			drw_rect(drw, x, 0, w, bh, 1, 1);
  		}
  	}
@@ -897,10 +904,11 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  }
  
  void
-@@ -756,32 +956,16 @@
+@@ -755,33 +955,17 @@ drawbars(void)
+ 		drawbar(m);
  }
  
- void
+-void
 -enternotify(XEvent *e)
 -{
 -	Client *c;
@@ -919,7 +927,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
 -	focus(c);
 -}
 -
--void
+ void
  expose(XEvent *e)
  {
  	Monitor *m;
@@ -934,7 +942,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  }
  
  void
-@@ -799,7 +983,11 @@
+@@ -799,7 +983,11 @@ focus(Client *c)
  		detachstack(c);
  		attachstack(c);
  		grabbuttons(c, 1);
@@ -947,7 +955,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  		setfocus(c);
  	} else {
  		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
-@@ -831,6 +1019,7 @@
+@@ -831,6 +1019,7 @@ focusmon(const Arg *arg)
  	unfocus(selmon->sel, 0);
  	selmon = m;
  	focus(NULL);
@@ -955,7 +963,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  }
  
  void
-@@ -867,9 +1056,17 @@
+@@ -867,9 +1056,17 @@ getatomprop(Client *c, Atom prop)
  	unsigned char *p = NULL;
  	Atom da, atom = None;
  
@@ -974,7 +982,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  		XFree(p);
  	}
  	return atom;
-@@ -903,6 +1100,16 @@
+@@ -903,6 +1100,16 @@ getstate(Window w)
  	return result;
  }
  
@@ -991,7 +999,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  int
  gettextprop(Window w, Atom atom, char *text, unsigned int size)
  {
-@@ -970,7 +1177,7 @@
+@@ -970,7 +1177,7 @@ grabkeys(void)
  void
  incnmaster(const Arg *arg)
  {
@@ -1000,7 +1008,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	arrange(selmon);
  }
  
-@@ -1007,7 +1214,8 @@
+@@ -1007,7 +1214,8 @@ killclient(const Arg *arg)
  {
  	if (!selmon->sel)
  		return;
@@ -1010,7 +1018,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  		XGrabServer(dpy);
  		XSetErrorHandler(xerrordummy);
  		XSetCloseDownMode(dpy, DestroyAll);
-@@ -1060,13 +1268,15 @@
+@@ -1060,13 +1268,15 @@ manage(Window w, XWindowAttributes *wa)
  	updatewindowtype(c);
  	updatesizehints(c);
  	updatewmhints(c);
@@ -1027,7 +1035,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	attachstack(c);
  	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
  		(unsigned char *) &(c->win), 1);
-@@ -1096,6 +1306,13 @@
+@@ -1096,6 +1306,13 @@ maprequest(XEvent *e)
  	static XWindowAttributes wa;
  	XMapRequestEvent *ev = &e->xmaprequest;
  
@@ -1041,7 +1049,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	if (!XGetWindowAttributes(dpy, ev->window, &wa))
  		return;
  	if (wa.override_redirect)
-@@ -1119,22 +1336,29 @@
+@@ -1119,22 +1336,29 @@ monocle(Monitor *m)
  		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
  }
  
@@ -1087,7 +1095,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  
  void
  movemouse(const Arg *arg)
-@@ -1219,7 +1443,18 @@
+@@ -1219,7 +1443,18 @@ propertynotify(XEvent *e)
  	Window trans;
  	XPropertyEvent *ev = &e->xproperty;
  
@@ -1107,10 +1115,11 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  		updatestatus();
  	else if (ev->state == PropertyDelete)
  		return; /* ignore */
-@@ -1270,6 +1505,19 @@
+@@ -1269,6 +1504,19 @@ recttomon(int x, int y, int w, int h)
+ 	return r;
  }
  
- void
++void
 +removesystrayicon(Client *i)
 +{
 +	Client **ii;
@@ -1123,14 +1132,14 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
 +	free(i);
 +}
 +
-+void
+ void
  resize(Client *c, int x, int y, int w, int h, int interact)
  {
- 	if (applysizehints(c, &x, &y, &w, &h, interact))
-@@ -1277,6 +1525,14 @@
+@@ -1276,6 +1524,14 @@ resize(Client *c, int x, int y, int w, int h, int interact)
+ 		resizeclient(c, x, y, w, h);
  }
  
- void
++void
 +resizebarwin(Monitor *m) {
 +	unsigned int w = m->ww;
 +	if (showsystray && m == systraytomon(m))
@@ -1138,11 +1147,10 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
 +	XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, w, bh);
 +}
 +
-+void
+ void
  resizeclient(Client *c, int x, int y, int w, int h)
  {
- 	XWindowChanges wc;
-@@ -1286,6 +1542,11 @@
+@@ -1286,6 +1542,11 @@ resizeclient(Client *c, int x, int y, int w, int h)
  	c->oldw = c->w; c->w = wc.width = w;
  	c->oldh = c->h; c->h = wc.height = h;
  	wc.border_width = c->bw;
@@ -1154,10 +1162,11 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
  	configure(c);
  	XSync(dpy, False);
-@@ -1349,6 +1610,19 @@
+@@ -1348,6 +1609,19 @@ resizemouse(const Arg *arg)
+ 	}
  }
  
- void
++void
 +resizerequest(XEvent *e)
 +{
 +	XResizeRequestEvent *ev = &e->xresizerequest;
@@ -1170,11 +1179,10 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
 +	}
 +}
 +
-+void
+ void
  restack(Monitor *m)
  {
- 	Client *c;
-@@ -1371,6 +1645,8 @@
+@@ -1371,6 +1645,8 @@ restack(Monitor *m)
  	}
  	XSync(dpy, False);
  	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
@@ -1183,10 +1191,11 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  }
  
  void
-@@ -1385,6 +1661,84 @@
+@@ -1384,6 +1660,84 @@ run(void)
+ 			handler[ev.type](&ev); /* call handler */
  }
  
- void
++void
 +runautostart(void)
 +{
 +	char *pathpfx;
@@ -1264,11 +1273,10 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
 +	free(path);
 +}
 +
-+void
+ void
  scan(void)
  {
- 	unsigned int i, num;
-@@ -1421,7 +1775,7 @@
+@@ -1421,7 +1775,7 @@ sendmon(Client *c, Monitor *m)
  	detachstack(c);
  	c->mon = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -1277,7 +1285,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	attachstack(c);
  	focus(NULL);
  	arrange(NULL);
-@@ -1437,26 +1791,37 @@
+@@ -1437,26 +1791,37 @@ setclientstate(Client *c, long state)
  }
  
  int
@@ -1326,7 +1334,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	}
  	return exists;
  }
-@@ -1470,7 +1835,7 @@
+@@ -1470,7 +1835,7 @@ setfocus(Client *c)
  			XA_WINDOW, 32, PropModeReplace,
  			(unsigned char *) &(c->win), 1);
  	}
@@ -1335,10 +1343,11 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  }
  
  void
-@@ -1502,12 +1867,31 @@
+@@ -1501,13 +1866,32 @@ setfullscreen(Client *c, int fullscreen)
+ 	}
  }
  
- void
++void
 +layoutscroll(const Arg *arg)
 +{
 +	if (!arg || !arg->i)
@@ -1357,7 +1366,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
 +
 +}
 +
-+void
+ void
  setlayout(const Arg *arg)
  {
  	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
@@ -1369,7 +1378,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	strncpy(selmon->ltsymbol, selmon->lt[selmon->sellt]->symbol, sizeof selmon->ltsymbol);
  	if (selmon->sel)
  		arrange(selmon);
-@@ -1526,7 +1910,7 @@
+@@ -1526,7 +1910,7 @@ setmfact(const Arg *arg)
  	f = arg->f < 1.0 ? arg->f + selmon->mfact : arg->f - 1.0;
  	if (f < 0.05 || f > 0.95)
  		return;
@@ -1378,7 +1387,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	arrange(selmon);
  }
  
-@@ -1558,22 +1942,32 @@
+@@ -1558,22 +1942,32 @@ setup(void)
  	wmatom[WMState] = XInternAtom(dpy, "WM_STATE", False);
  	wmatom[WMTakeFocus] = XInternAtom(dpy, "WM_TAKE_FOCUS", False);
  	netatom[NetActiveWindow] = XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False);
@@ -1414,7 +1423,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	/* init bars */
  	updatebars();
  	updatestatus();
-@@ -1582,7 +1976,7 @@
+@@ -1582,7 +1976,7 @@ setup(void)
  	XChangeProperty(dpy, wmcheckwin, netatom[NetWMCheck], XA_WINDOW, 32,
  		PropModeReplace, (unsigned char *) &wmcheckwin, 1);
  	XChangeProperty(dpy, wmcheckwin, netatom[NetWMName], utf8string, 8,
@@ -1423,7 +1432,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	XChangeProperty(dpy, root, netatom[NetWMCheck], XA_WINDOW, 32,
  		PropModeReplace, (unsigned char *) &wmcheckwin, 1);
  	/* EWMH support per view */
-@@ -1620,6 +2014,10 @@
+@@ -1620,6 +2014,10 @@ showhide(Client *c)
  	if (!c)
  		return;
  	if (ISVISIBLE(c)) {
@@ -1434,10 +1443,11 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  		/* show clients top down */
  		XMoveWindow(dpy, c->win, c->x, c->y);
  		if ((!c->mon->lt[c->mon->sellt]->arrange || c->isfloating) && !c->isfullscreen)
-@@ -1641,6 +2039,46 @@
+@@ -1640,6 +2038,46 @@ sigchld(int unused)
+ 	while (0 < waitpid(-1, NULL, WNOHANG));
  }
  
- void
++void
 +sigdwmblocks(const Arg *arg)
 +{
 +        static int fd = -1;
@@ -1477,11 +1487,10 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
 +	    && NULL != c->mon->lt[c->mon->sellt]->arrange;
 +}
 +
-+void
+ void
  spawn(const Arg *arg)
  {
- 	if (arg->v == dmenucmd)
-@@ -1705,9 +2143,20 @@
+@@ -1705,9 +2143,20 @@ tile(Monitor *m)
  void
  togglebar(const Arg *arg)
  {
@@ -1504,10 +1513,11 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	arrange(selmon);
  }
  
-@@ -1726,6 +2175,32 @@
+@@ -1725,6 +2174,32 @@ togglefloating(const Arg *arg)
+ 	arrange(selmon);
  }
  
- void
++void
 +togglescratch(const Arg *arg)
 +{
 +	Client *c;
@@ -1533,11 +1543,10 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
 +	}
 +}
 +
-+void
+ void
  toggletag(const Arg *arg)
  {
- 	unsigned int newtags;
-@@ -1744,9 +2219,33 @@
+@@ -1744,9 +2219,33 @@ void
  toggleview(const Arg *arg)
  {
  	unsigned int newtagset = selmon->tagset[selmon->seltags] ^ (arg->ui & TAGMASK);
@@ -1571,7 +1580,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  		focus(NULL);
  		arrange(selmon);
  	}
-@@ -1802,25 +2301,37 @@
+@@ -1802,25 +2301,37 @@ unmapnotify(XEvent *e)
  		else
  			unmanage(c, 0);
  	}
@@ -1611,7 +1620,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  		XMapRaised(dpy, m->barwin);
  		XSetClassHint(dpy, m->barwin, &ch);
  	}
-@@ -1853,6 +2364,41 @@
+@@ -1853,6 +2364,41 @@ updateclientlist()
  				(unsigned char *) &(c->win), 1);
  }
  
@@ -1653,7 +1662,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  int
  updategeom(void)
  {
-@@ -1903,7 +2449,7 @@
+@@ -1903,7 +2449,7 @@ updategeom(void)
  					m->clients = c->next;
  					detachstack(c);
  					c->mon = mons;
@@ -1662,7 +1671,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  					attachstack(c);
  				}
  				if (m == selmon)
-@@ -1993,11 +2539,144 @@
+@@ -1993,11 +2539,144 @@ updatesizehints(Client *c)
  void
  updatestatus(void)
  {
@@ -1809,7 +1818,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  void
  updatetitle(Client *c)
  {
-@@ -2041,15 +2720,63 @@
+@@ -2041,15 +2720,63 @@ updatewmhints(Client *c)
  void
  view(const Arg *arg)
  {
@@ -1874,7 +1883,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  Client *
  wintoclient(Window w)
  {
-@@ -2063,6 +2790,16 @@
+@@ -2063,6 +2790,16 @@ wintoclient(Window w)
  	return NULL;
  }
  
@@ -1891,7 +1900,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  Monitor *
  wintomon(Window w)
  {
-@@ -2116,6 +2853,22 @@
+@@ -2116,6 +2853,22 @@ xerrorstart(Display *dpy, XErrorEvent *ee)
  	return -1;
  }
  
@@ -1914,7 +1923,7 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  void
  zoom(const Arg *arg)
  {
-@@ -2148,6 +2901,7 @@
+@@ -2148,6 +2901,7 @@ main(int argc, char *argv[])
  		die("pledge");
  #endif /* __OpenBSD__ */
  	scan();
@@ -1924,10 +1933,11 @@ diff '--color=auto' -u a/dwm.c b/dwm.c
  	XCloseDisplay(dpy);
 
 
-
-diff -r aaab44133a68 -r 6c472a21a588 selfrestart.c
---- /dev/null   Thu Jan 01 00:00:00 1970 +0000
-+++ b/selfrestart.c     Tue Dec 04 21:54:44 2012 +0200
+diff --git a/selfrestart.c b/selfrestart.c
+new file mode 100644
+index 0000000..d695d48
+--- /dev/null
++++ b/selfrestart.c
 @@ -0,0 +1,65 @@
 +#include <unistd.h>
 +#include <sys/types.h>
@@ -1996,13 +2006,69 @@ diff -r aaab44133a68 -r 6c472a21a588 selfrestart.c
 +}
 
 
-
-diff -r aaab44133a69 -r 6c472a21a589 secrets.h
---- /dev/null   Thu Jan 01 00:00:00 1970 +0000
-+++ b/secrets.h Tue Dec 04 21:54:44 2012 +0200
-@@ -0,0 +1,4 @@
+diff --git a/secrets.h b/secrets.h
+new file mode 100644
+index 0000000..5146525
+--- /dev/null
++++ b/secrets.h
+@@ -0,0 +1,3 @@
 +static const char path[] = "";
 +static const char tmux_start[] = "";
 +static const char powermenu[] = "";
-+
 
+
+diff --git a/movestack.c b/movestack.c
+new file mode 100644
+index 0000000..520f4ae
+--- /dev/null
++++ b/movestack.c
+@@ -0,0 +1,48 @@
++void
++movestack(const Arg *arg) {
++	Client *c = NULL, *p = NULL, *pc = NULL, *i;
++
++	if(arg->i > 0) {
++		/* find the client after selmon->sel */
++		for(c = selmon->sel->next; c && (!ISVISIBLE(c) || c->isfloating); c = c->next);
++		if(!c)
++			for(c = selmon->clients; c && (!ISVISIBLE(c) || c->isfloating); c = c->next);
++
++	}
++	else {
++		/* find the client before selmon->sel */
++		for(i = selmon->clients; i != selmon->sel; i = i->next)
++			if(ISVISIBLE(i) && !i->isfloating)
++				c = i;
++		if(!c)
++			for(; i; i = i->next)
++				if(ISVISIBLE(i) && !i->isfloating)
++					c = i;
++	}
++	/* find the client before selmon->sel and c */
++	for(i = selmon->clients; i && (!p || !pc); i = i->next) {
++		if(i->next == selmon->sel)
++			p = i;
++		if(i->next == c)
++			pc = i;
++	}
++
++	/* swap c and selmon->sel selmon->clients in the selmon->clients list */
++	if(c && c != selmon->sel) {
++		Client *temp = selmon->sel->next==c?selmon->sel:selmon->sel->next;
++		selmon->sel->next = c->next==selmon->sel?c:c->next;
++		c->next = temp;
++
++		if(p && p != c)
++			p->next = c;
++		if(pc && pc != selmon->sel)
++			pc->next = selmon->sel;
++
++		if(selmon->sel == selmon->clients)
++			selmon->clients = c;
++		else if(c == selmon->clients)
++			selmon->clients = selmon->sel;
++
++		arrange(selmon);
++	}
++}
+\ No newline at end of file
