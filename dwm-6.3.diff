@@ -1,9 +1,10 @@
 diff --git a/config.def.h b/config.def.h
-index a2ac963..2ef1cd1 100644
+index a2ac963..ee443c7 100644
 --- a/config.def.h
 +++ b/config.def.h
-@@ -1,34 +1,95 @@
-+#include "secrets.h";
+@@ -1,34 +1,96 @@
++#include "secrets.h"
++
  /* See LICENSE file for copyright and license details. */
  
  /* appearance */
@@ -57,7 +58,7 @@ index a2ac963..2ef1cd1 100644
 +const char *spcmd1[] = {"st", "-t", "st-scratchpad", "-n", "st", NULL };
 +const char *spcmd2[] = {"st", "-t", "Spotify-tui", "-e", "spt", NULL };
 +const char *spcmd3[] = {"st", "-t", "Calculator", "-e", "rink", NULL };
-+const char *spcmd4[] = {"st", "-t", "Daily", "-e", "nvim", "+", path, NULL };
++const char *spcmd4[] = {"st", "-t", "Notes", "-e", "nvim", "+", path, NULL };
 +const char *spcmd5[] = {"pavucontrol", NULL};
 +/*
 +const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
@@ -65,10 +66,10 @@ index a2ac963..2ef1cd1 100644
 +*/
 +static Sp scratchpads[] = {
 +    /* name                       cmd  */
-+    {"st-scratchpad",      spcmd1},
++    {"st-scratchpad",             spcmd1},
 +    {"Spotify-tui",               spcmd2},
 +    {"Calculator",                spcmd3},
-+    {"Daily",                     spcmd4},
++    {"Notes",                     spcmd4},
 +    {"Pavucontrol",               spcmd5},
 +    /*{"keepassxc",                 spcmd3},*/
  };
@@ -90,7 +91,7 @@ index a2ac963..2ef1cd1 100644
 +        { NULL,                        NULL,              "st-scratchpad",          SPTAG(0),     1,           -1 },
 +        { NULL,                        NULL,              "Spotify-tui",            SPTAG(1),     1,           -1 },
 +        { NULL,                        NULL,              "Calculator",             SPTAG(2),     1,           -1 },
-+        { NULL,                        NULL,              "Daily",                  SPTAG(3),     1,           -1 },
++        { NULL,                        NULL,              "Notes",                  SPTAG(3),     1,           -1 },
 +        { "jetbrains-phpstorm",        NULL,              NULL,                     1 << 1,       0,           -1 },
 +        { "Org.gnome.Nautilus",        NULL,              NULL,                     1 << 2,       0,           -1 },
 +        { "DBeaver",                   NULL,              NULL,                     1 << 3,       0,           -1 },
@@ -107,7 +108,7 @@ index a2ac963..2ef1cd1 100644
  };
  
  /* layout(s) */
-@@ -40,12 +101,12 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
+@@ -40,12 +102,12 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
  static const Layout layouts[] = {
  	/* symbol     arrange function */
  	{ "[]=",      tile },    /* first entry is default */
@@ -122,7 +123,7 @@ index a2ac963..2ef1cd1 100644
  #define TAGKEYS(KEY,TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-@@ -53,64 +114,125 @@ static const Layout layouts[] = {
+@@ -53,64 +115,125 @@ static const Layout layouts[] = {
  	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
  
  /* helper for spawning shell commands in the pre dwm-5.0 fashion */
@@ -137,13 +138,13 @@ index a2ac963..2ef1cd1 100644
 +static const char *roficmd[]       = { "rofi", "-show", "drun", "-show-icons", NULL };
 +static const char *powermenucmd[]  = { powermenu, NULL };
 +static const char *termcmd[]       = { "st", "-e", tmux_start, "-n", "st", NULL };
-+static const char *browsercmd[]    = { "firefox-esr", NULL };
++static const char *browsercmd[]    = { "firefox", NULL };
 +static const char *filescmd[]      = { "nautilus", NULL };
 +static const char *flameshotcmd[]  = { "flameshot", "gui", NULL };
 +/* static const char *pavuctrlcmd[]   = { "pavucontrol", NULL }; */
 +static const char *lockcmd[]       = { "light-locker-command", "-l", NULL };
 +
-+static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+3%",     NULL };
++static const char *upvol[]   = { "pactl", "set-sink-volume", "0", "+3%",     NULL };
 +static const char *downvol[] = { "pactl", "set-sink-volume", "0", "-3%",     NULL };
 +static const char *mutevol[] = { "amixer", "set", "Master", "toggle",  NULL };
 +static const char *mutemic[] = { "pactl", "set-source-mute", "alsa_input.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__hw_sofhdadsp_6__source", "toggle",  NULL };
@@ -289,8 +290,6 @@ index a2ac963..2ef1cd1 100644
  	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
  };
 -
-
-
 diff --git a/dwm.1 b/dwm.1
 index ddc8321..86e73f9 100644
 --- a/dwm.1
@@ -332,8 +331,6 @@ index ddc8321..86e73f9 100644
  .SH CUSTOMIZATION
  dwm is customized by creating a custom config.h and (re)compiling the source
  code. This keeps it fast, secure and simple.
-
-
 diff --git a/dwm.c b/dwm.c
 index a96f33c..4c0dd14 100644
 --- a/dwm.c
@@ -1931,8 +1928,6 @@ index a96f33c..4c0dd14 100644
  	run();
  	cleanup();
  	XCloseDisplay(dpy);
-
-
 diff --git a/selfrestart.c b/selfrestart.c
 new file mode 100644
 index 0000000..d695d48
@@ -2004,8 +1999,6 @@ index 0000000..d695d48
 +
 +    execv(argv[0], argv);
 +}
-
-
 diff --git a/movestack.c b/movestack.c
 new file mode 100644
 index 0000000..520f4ae

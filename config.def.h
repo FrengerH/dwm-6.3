@@ -1,4 +1,4 @@
-#include "secrets.h";
+#include "secrets.h"
 
 /* See LICENSE file for copyright and license details. */
 
@@ -48,7 +48,7 @@ typedef struct {
 const char *spcmd1[] = {"st", "-t", "st-scratchpad", "-n", "st", NULL };
 const char *spcmd2[] = {"st", "-t", "Spotify-tui", "-e", "spt", NULL };
 const char *spcmd3[] = {"st", "-t", "Calculator", "-e", "rink", NULL };
-const char *spcmd4[] = {"st", "-t", "Daily", "-e", "nvim", "+", path, NULL };
+const char *spcmd4[] = {"st", "-t", "Notes", "-e", "nvim", "+", path, NULL };
 const char *spcmd5[] = {"pavucontrol", NULL};
 /*
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "ranger", NULL };
@@ -56,10 +56,10 @@ const char *spcmd3[] = {"keepassxc", NULL };
 */
 static Sp scratchpads[] = {
     /* name                       cmd  */
-    {"st-scratchpad",      spcmd1},
+    {"st-scratchpad",             spcmd1},
     {"Spotify-tui",               spcmd2},
     {"Calculator",                spcmd3},
-    {"Daily",                     spcmd4},
+    {"Notes",                     spcmd4},
     {"Pavucontrol",               spcmd5},
     /*{"keepassxc",                 spcmd3},*/
 };
@@ -77,7 +77,7 @@ static const Rule rules[] = {
         { NULL,                        NULL,              "st-scratchpad",          SPTAG(0),     1,           -1 },
         { NULL,                        NULL,              "Spotify-tui",            SPTAG(1),     1,           -1 },
         { NULL,                        NULL,              "Calculator",             SPTAG(2),     1,           -1 },
-        { NULL,                        NULL,              "Daily",                  SPTAG(3),     1,           -1 },
+        { NULL,                        NULL,              "Notes",                  SPTAG(3),     1,           -1 },
         { "jetbrains-phpstorm",        NULL,              NULL,                     1 << 1,       0,           -1 },
         { "Org.gnome.Nautilus",        NULL,              NULL,                     1 << 2,       0,           -1 },
         { "DBeaver",                   NULL,              NULL,                     1 << 3,       0,           -1 },
@@ -130,7 +130,7 @@ static const char *flameshotcmd[]  = { "flameshot", "gui", NULL };
 /* static const char *pavuctrlcmd[]   = { "pavucontrol", NULL }; */
 static const char *lockcmd[]       = { "light-locker-command", "-l", NULL };
 
-static const char *upvol[]   = { "/usr/bin/pactl", "set-sink-volume", "0", "+3%",     NULL };
+static const char *upvol[]   = { "pactl", "set-sink-volume", "0", "+3%",     NULL };
 static const char *downvol[] = { "pactl", "set-sink-volume", "0", "-3%",     NULL };
 static const char *mutevol[] = { "amixer", "set", "Master", "toggle",  NULL };
 static const char *mutemic[] = { "pactl", "set-source-mute", "alsa_input.pci-0000_00_1f.3-platform-skl_hda_dsp_generic.HiFi__hw_sofhdadsp_6__source", "toggle",  NULL };
