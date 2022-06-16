@@ -23,7 +23,7 @@ index 91ab8ca..1431291 100644
   * 5: value of shell in config.h
   */
 -static char *shell = "/bin/sh";
-+static char *shell = "fish";
++static char *shell = "/run/current-system/sw/bin/fish";
  char *utmp = NULL;
  /* scroll program: to enable use a string like "scroll" */
  char *scroll = NULL;
